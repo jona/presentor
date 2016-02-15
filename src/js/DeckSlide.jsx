@@ -38,6 +38,8 @@ const DeckSlide = React.createClass({
         <div>
           <PageNav btns={btns} />
 
+          <h1 className="deck-title"><strong>Deck</strong>: {this.props.params.name}</h1>
+
           <ul className="slide-nav">
             {nav}
           </ul>
@@ -70,7 +72,7 @@ const DeckSlide = React.createClass({
   topNav() {
     return [
       {
-        text: 'Back to deck',
+        text: 'Back to deck list',
         link: '/',
         iconClass: 'fa fa-arrow-left'
       },
@@ -87,7 +89,7 @@ const DeckSlideNav = React.createClass({
   render() {
     return (
       <li>
-        <Link className="btn" to={`/decks/${this.props.name}/slides/${this.props.slide}`}>{this.props.slide}</Link>
+        <Link className="btn" activeClassName="active" to={`/decks/${this.props.name}/slides/${this.props.slide}`}>{this.props.slide}</Link>
       </li>
     )
   }

@@ -25,9 +25,13 @@ const DeckList = React.createClass({
     });
 
     return (
-      <ul className="decks">
-        {decks}
-      </ul>
+      <div>
+        <h1 className="deck-list-header">Deck list</h1>
+
+        <ul className="decks">
+          {decks}
+        </ul>
+      </div>
     )
   }
 })
@@ -36,7 +40,9 @@ const DeckListItem = React.createClass({
   render() {
     return (
       <li className="deck deck-list">
-        <Link to={`/decks/${this.props.name}/slides/1`}><i className="fa fa-tv"></i> {this.props.name}</Link>
+        <Link to={`/decks/${this.props.name}/slides/1`}>
+          <header><i className="fa fa-tv"></i> {this.props.name}</header>
+        </Link>
       </li>
     )
   }
