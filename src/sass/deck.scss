@@ -1,0 +1,26 @@
+ul.decks{
+  margin:15px;
+  padding:0;
+}
+
+.deck a{
+  display:block;
+  background:#fff;
+  border:1px solid #e8e8e8;
+  box-shadow:0 0 3px rgba(0, 0, 0, 0.08);
+  border-radius:1px;
+  color:#666;
+
+  &:hover{
+    background:#fafafa;
+  }
+}
+
+.deck-list i{
+  color:#ccc;
+}
+
+.deck.deck-list a{
+  margin:0 0 10px;
+  padding:20px;
+}

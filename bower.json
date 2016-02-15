@@ -1,0 +1,23 @@
+{
+  "name": "coding-challenge-js",
+  "description": "Frontend Coding Challenge for NomNom",
+  "main": "index.js",
+  "authors": [
+    "NomNom Insights"
+  ],
+  "license": "All rights reserved, this code can't be shared with out permission from NomNom Insights",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "momentjs#^2.11.2",
+    "normalize-css": "^3.0.3"
+  }
+}
