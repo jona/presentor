@@ -16,20 +16,38 @@ var customOpts = {
   debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
-var b = watchify(browserify(opts)); 
 
-b.transform("babelify", {presets: ["es2015", "react"]});
+gulp.task('scripts:watch', watch);
+gulp.task('scripts', build);
 
-gulp.task('scripts:watch', bundle);
-b.on('update', bundle);
-b.on('log', gutil.log);
 
-function bundle() {
+function watch() {
+  var b = watchify(browserify(opts));
+
+  b.transform("babelify", {presets: ["es2015", "react"]});
+
+  b.on('update', watch);
+  b.on('log', gutil.log);
+
   return b.bundle()
-  .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-  .pipe(source('bundle.js'))
-  .pipe(buffer())
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(sourcemaps.write('./'))
-  .pipe(gulp.dest(config.dest));
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(config.dest));
+}
+
+function build(){
+  var b = browserify(opts);
+
+  b.transform("babelify", {presets: ["es2015", "react"]});
+
+  return b.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(config.dest));
 }
