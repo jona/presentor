@@ -1,7 +1,7 @@
 {
-  "name": "coding-challenge-js",
+  "name": "presentor",
   "version": "1.0.0",
-  "description": "Frontend Coding Challenge for NomNom",
+  "description": "React-based prensentation app",
   "main": "index.js",
   "dependencies": {
     "express": "^4.13.3",
@@ -32,6 +32,6 @@
     "gulp": "gulp",
     "build": "gulp bwr && gulp build"
   },
-  "author": "NomNom Insights",
-  "license": "All rights reserved, this code can't be shared with out permission from NomNom Insights"
+  "author": "Jonathan Morua",
+  "license": "All rights reserved"
 }

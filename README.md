@@ -1,5 +1,5 @@
 # Presentor
-Take API and creates a presentation app
+Takes demo API and creates a presentation app.
 
 ## Prerequisites
 This app is dockerized so you will need to install the following:
