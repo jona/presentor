@@ -27,7 +27,7 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "bower": "bower --allow-root",
+    "bower-install": "bower --allow-root --save install",
     "gulp": "gulp"
   },
   "author": "NomNom Insights",
