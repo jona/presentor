@@ -3,6 +3,7 @@
 import React from 'react'
 import request from 'request'
 import { Link } from 'react-router'
+import uuid from 'uuid'
 
 const DeckList = React.createClass({
   getInitialState() {
@@ -21,7 +22,7 @@ const DeckList = React.createClass({
 
   render() {
     let decks = this.state.data.map(function(deck, index) {
-      return <DeckListItem key={index} name={deck} />
+      return <DeckListItem key={uuid.v4()} name={deck} />
     });
 
     return (

@@ -3,6 +3,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import request from 'request'
+import uuid from 'uuid'
 
 const DeckSlideImages = React.createClass({
   render() {
@@ -10,7 +11,7 @@ const DeckSlideImages = React.createClass({
 
     if(arrOfImages.length > 0) {
       let images = arrOfImages.map(function(obj, index) {
-        return <DeckSlideImage key={index} src={obj.image} />
+        return <DeckSlideImage key={uuid.v4()} src={obj.image} />
       });
 
       return <div className="images">{images}</div>

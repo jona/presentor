@@ -3,6 +3,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import request from 'request'
+import uuid from 'uuid'
 
 // Helper Components
 import PageNav from './PageNav'
@@ -28,7 +29,7 @@ const DeckSlide = React.createClass({
       let i = 1
       let nav = []
       while(i <= numberOfSlides){
-        nav.push(<DeckSlideNav key={i} name={this.props.params.name} slide={i} />)
+        nav.push(<DeckSlideNav key={uuid.v4()} name={this.props.params.name} slide={i} />)
         i++
       }
 
