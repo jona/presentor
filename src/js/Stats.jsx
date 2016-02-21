@@ -7,7 +7,15 @@ import CountryStats from './stats/Country'
 // Helper Components
 import PageNav from './PageNav'
 
-var Stats = React.createClass({
+export default class Stats extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
+
+  static defaultProps = {
+    params: []
+  };
+
   render() {
     let btns = this.topNav()
 
@@ -19,7 +27,7 @@ var Stats = React.createClass({
         <CountryStats params={this.props.params}/>
       </div>
     );
-  },
+  }
 
   topNav() {
     return [
@@ -30,6 +38,4 @@ var Stats = React.createClass({
       }
     ]
   }
-});
-
-module.exports = Stats;
+}

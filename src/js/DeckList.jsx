@@ -5,20 +5,22 @@ import request from 'request'
 import { Link } from 'react-router'
 import uuid from 'uuid'
 
-const DeckList = React.createClass({
-  getInitialState() {
-    return {data: []}
-  },
+export default class DeckList extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      data: []
+    }
+  }
 
   componentDidMount() {
-    let self = this
-
     request.get(`${window.location.origin}/api/decks`,
-      function(err, response, body) {
-        return self.setState({data: JSON.parse(body).decks})
+      (err, response, body) => {
+        return this.setState({data: JSON.parse(body).decks})
       }
     )
-  },
+  }
 
   render() {
     let decks = this.state.data.map(function(deck, index) {
@@ -35,9 +37,9 @@ const DeckList = React.createClass({
       </div>
     )
   }
-})
+}
 
-const DeckListItem = React.createClass({
+class DeckListItem extends React.Component {
   render() {
     return (
       <li className="deck deck-list">
@@ -47,6 +49,4 @@ const DeckListItem = React.createClass({
       </li>
     )
   }
-})
-
-module.exports = DeckList
+}

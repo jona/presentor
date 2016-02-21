@@ -5,7 +5,15 @@ import { Link } from 'react-router'
 import request from 'request'
 import uuid from 'uuid'
 
-const DeckSlideImages = React.createClass({
+export default class DeckSlideImages extends React.Component {
+  static propTypes = {
+    slide: React.PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    slide: []
+  };
+
   render() {
     let arrOfImages = this.findImages()
 
@@ -19,21 +27,19 @@ const DeckSlideImages = React.createClass({
       return null
     }
 
-  },
+  }
 
   findImages() {
-    return this.props.data.slide.filter(function(el){
+    return this.props.slide.filter(function(el){
       if(Object.keys(el)[0] == "image"){
         return el
       }
     })
   }
-})
+}
 
-const DeckSlideImage = React.createClass({
+class DeckSlideImage extends React.Component {
   render() {
     return <img src={this.props.src} />
   }
-})
-
-module.exports = DeckSlideImages
+}

@@ -2,7 +2,15 @@
 
 import React from 'react'
 
-const DeckSlideHeading = React.createClass({
+export default class DeckSlideHeading extends React.Component {
+  static propTypes = {
+    slide: React.PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    slide: []
+  };
+
   render() {
     let heading = this.heading()
 
@@ -11,10 +19,10 @@ const DeckSlideHeading = React.createClass({
     } else {
       return null
     }
-  },
+  }
 
   heading() {
-    let arrOfHeadings = this.props.data.slide.filter(function(el){
+    let arrOfHeadings = this.props.slide.filter(function(el){
       if(Object.keys(el)[0] == "heading"){
         return el
       }
@@ -26,6 +34,4 @@ const DeckSlideHeading = React.createClass({
       return null
     }
   }
-})
-
-module.exports = DeckSlideHeading
+}

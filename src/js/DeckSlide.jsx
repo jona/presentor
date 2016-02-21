@@ -13,62 +13,78 @@ import DeckSlideHeading from './DeckSlide/Heading'
 import DeckSlideImages from './DeckSlide/Images'
 import DeckSlideParagraphs from './DeckSlide/Paragraphs'
 
-const DeckSlide = React.createClass({
+export default class DeckSlide extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
+
+  static defaultProps = {
+    params: {}
+  };
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      data: {}
+    }
+  }
+
   componentDidMount() {
     this.fetchData(this.props.params);
-  },
+  }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.fetchData(nextProps.params);
-  },
+  }
 
   render() {
-    if(this.state){
-      let numberOfSlides = this.state.data.slides
+    let numberOfSlides = this.state.data.slides
 
-      let i = 1
-      let nav = []
-      while(i <= numberOfSlides){
-        nav.push(<DeckSlideNav key={uuid.v4()} name={this.props.params.name} slide={i} />)
-        i++
-      }
-
-      let btns = this.topNav()
-
-      return (
-        <div>
-          <PageNav btns={btns} />
-
-          <h1 className="deck-title"><strong>Deck</strong>: {this.props.params.name}</h1>
-
-          <ul className="slide-nav">
-            {nav}
-          </ul>
-
-          <div className="slide-holder">
-            <div className="slide">
-              <DeckSlideHeading data={this.state.data} />
-              <DeckSlideImages data={this.state.data} />
-              <DeckSlideParagraphs data={this.state.data} />
-            </div>
-          </div>
-
-        </div>
-      )
-    } else {
-      return null
+    let i = 1
+    let nav = []
+    while(i <= numberOfSlides){
+      nav.push(<DeckSlideNav key={uuid.v4()} name={this.state.name} slide={i} />)
+      i++
     }
-  },
+
+    let btns = this.topNav()
+
+    return (
+      <div>
+        <PageNav btns={btns} />
+
+        <h1 className="deck-title"><strong>Deck</strong>: {this.state.name}</h1>
+
+        <ul className="slide-nav">
+          {nav}
+        </ul>
+
+        <div className="slide-holder">
+          <div className="slide">
+            <DeckSlideHeading slide={this.state.data.slide} />
+            <DeckSlideImages slide={this.state.data.slide} />
+            <DeckSlideParagraphs slide={this.state.data.slide} />
+          </div>
+        </div>
+
+      </div>
+    )
+  }
 
   fetchData(params) {
-    let self = this
-
-    request.get(`${window.location.origin}/api/decks/${params.name}/slide/${params.slide}`,
-      function(err, response, body) {
-        return self.setState({data: JSON.parse(body)})
+    request.get(`${window.location.origin}/api/decks/${params.name}/slide/${params.slideNumber}`,
+      (err, response, body) => {
+        return (
+          this.setState({
+            name: params.name,
+            slideNumber: params.slideNumber,
+            data: JSON.parse(body)
+          })
+        )
       }
     )
-  },
+  }
 
   topNav() {
     return [
@@ -84,9 +100,9 @@ const DeckSlide = React.createClass({
       }
     ]
   }
-})
+}
 
-const DeckSlideNav = React.createClass({
+class DeckSlideNav extends React.Component {
   render() {
     return (
       <li>
@@ -94,6 +110,4 @@ const DeckSlideNav = React.createClass({
       </li>
     )
   }
-})
-
-module.exports = DeckSlide
+}

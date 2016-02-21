@@ -4,22 +4,28 @@ import React from 'react'
 import { Link } from 'react-router'
 import uuid from 'uuid'
 
-const PageNav = React.createClass({
-    render() {
-      let btns = this.props.btns.map(function(el, index){
-        return (
-          <Link key={uuid.v4()} className="btn" to={el.link}>
-            <i className={el.iconClass}></i> {el.text}
-          </Link>
-        )
-      })
+export default class PageNav extends React.Component {
+  static propTypes = {
+    btns: React.PropTypes.array.isRequired
+  };
 
+  static defaultProps = {
+    btns: []
+  };
+
+  render() {
+    let btns = this.props.btns.map(function(el, index){
       return (
-        <div className="page-nav">
-          {btns}
-        </div>
+        <Link key={uuid.v4()} className="btn" to={el.link}>
+          <i className={el.iconClass}></i> {el.text}
+        </Link>
       )
-    }
-})
+    })
 
-module.exports = PageNav
+    return (
+      <div className="page-nav">
+        {btns}
+      </div>
+    )
+  }
+}

@@ -3,19 +3,25 @@
 import React from 'react'
 import request from 'request'
 
-const CountryStats = React.createClass({
+export default class CountryStats extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
+
+  static defaultProps = {
+    slide: {}
+  };
+
   componentDidMount() {
-    let self = this
+    this.fetchData(this.props.params, (data) => {
+      this.setState({data: data})
 
-    this.fetchData(this.props.params, function(data){
-      self.setState({data: data})
-
-      let chartData  = self.prepareDates(data)
+      let chartData  = this.prepareDates(data)
 
       let ctx = document.getElementById("countryChart").getContext("2d");
       new Chart(ctx).Line(chartData);
-    });
-  },
+    })
+  }
 
   render() {
     return (
@@ -24,17 +30,15 @@ const CountryStats = React.createClass({
         <canvas id="countryChart"></canvas>
       </div>
     )
-  },
+  }
 
   fetchData(params, cb) {
-    let self = this
-
     request.get(`${window.location.origin}/api/decks/${params.name}/stats/countries`,
-      function(err, response, body) {
+      function(err, response, body){
         return cb(JSON.parse(body))
       }
     )
-  },
+  }
 
   prepareDates(data){
     let labels = data.map(function(el){
@@ -63,6 +67,4 @@ const CountryStats = React.createClass({
 
     return chartData
   }
-});
-
-module.exports = CountryStats;
+}

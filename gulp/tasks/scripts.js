@@ -24,7 +24,7 @@ gulp.task('scripts', build);
 function watch() {
   var b = watchify(browserify(opts));
 
-  b.transform("babelify", {presets: ["es2015", "react"]});
+  b.transform("babelify", {presets: ["es2015", "react", "stage-1"]});
 
   b.on('update', watch);
   b.on('log', gutil.log);
@@ -41,7 +41,7 @@ function watch() {
 function build(){
   var b = browserify(opts);
 
-  b.transform("babelify", {presets: ["es2015", "react"]});
+  b.transform("babelify", {presets: ["es2015", "react", "stage-1"]});
 
   return b.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))

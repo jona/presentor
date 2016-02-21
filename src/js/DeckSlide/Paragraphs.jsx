@@ -4,7 +4,15 @@ import React from 'react'
 import { Link } from 'react-router'
 import uuid from 'uuid'
 
-const DeckSlideParagraphs = React.createClass({
+export default class DeckSlideParagraphs extends React.Component {
+  static propTypes = {
+    slide: React.PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    slide: []
+  };
+
   render() {
     let arrOfParagraphs = this.findParagraphs()
 
@@ -17,21 +25,19 @@ const DeckSlideParagraphs = React.createClass({
     } else {
       return null
     }
-  },
+  }
 
   findParagraphs() {
-    return this.props.data.slide.filter(function(el){
+    return this.props.slide.filter(function(el){
       if(Object.keys(el)[0] == "para"){
         return el
       }
     })
   }
-})
+}
 
-const DeckSlideParagraph = React.createClass({
+class DeckSlideParagraph extends React.Component {
   render() {
     return <p>{this.props.text}</p>
   }
-})
-
-module.exports = DeckSlideParagraphs
+}

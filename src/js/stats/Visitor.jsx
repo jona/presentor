@@ -3,19 +3,25 @@
 import React from 'react'
 import request from 'request'
 
-const VisitorStats = React.createClass({
+export default class VisitorStats extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
+
+  static defaultProps = {
+    slide: {}
+  };
+
   componentDidMount() {
-    let self = this
+    this.fetchData(this.props.params, (data) => {
+      this.setState({data: data})
 
-    this.fetchData(this.props.params, function(data){
-      self.setState({data: data})
-
-      let chartData  = self.prepareDates(data)
+      let chartData  = this.prepareDates(data)
 
       let ctx = document.getElementById("visitorChart").getContext("2d");
       new Chart(ctx).Line(chartData);
-    });
-  },
+    })
+  }
 
   render() {
     return (
@@ -24,17 +30,15 @@ const VisitorStats = React.createClass({
         <canvas id="visitorChart"></canvas>
       </div>
     )
-  },
+  }
 
   fetchData(params, cb) {
-    let self = this
-
     request.get(`${window.location.origin}/api/decks/${params.name}/stats/visitors`,
-      function(err, response, body) {
+      function(err, response, body){
         return cb(JSON.parse(body))
       }
     )
-  },
+  }
 
   prepareDates(data){
     let labels = data.map(function(el){
@@ -63,6 +67,4 @@ const VisitorStats = React.createClass({
 
     return chartData
   }
-});
-
-module.exports = VisitorStats;
+}
