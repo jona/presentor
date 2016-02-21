@@ -38,6 +38,10 @@ export default class DeckSlide extends React.Component {
     this.fetchData(nextProps.params);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.slideNumber !== this.state.slideNumber
+  }
+
   render() {
     let numberOfSlides = this.state.data.slides
 
