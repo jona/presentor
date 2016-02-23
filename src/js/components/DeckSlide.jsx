@@ -13,6 +13,15 @@ import DeckSlideHeading from './DeckSlide/Heading'
 import DeckSlideImages from './DeckSlide/Images'
 import DeckSlideParagraphs from './DeckSlide/Paragraphs'
 
+//Nav component
+import DeckSlideNav from './DeckSlide/Nav'
+
+//Store
+import DeckSlideStore from '../stores/DeckSlideStore'
+
+//Actions
+import DeckSlideActions from '../actions/DeckSlideActions'
+
 export default class DeckSlide extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
@@ -25,30 +34,38 @@ export default class DeckSlide extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      data: {}
-    }
+    this.state = DeckSlideStore.getState()
+
+    return this
+  }
+
+  componentWillMount() {
+    return DeckSlideStore.listen(this.onChange)
   }
 
   componentDidMount() {
-    this.fetchData(this.props.params);
+    return DeckSlideActions.fetchDeckSlide(this.props.params.name, this.props.params.slideNumber)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchData(nextProps.params);
+    return DeckSlideActions.fetchDeckSlide(nextProps.params.name, nextProps.params.slideNumber)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.slideNumber !== this.state.slideNumber
+  componentWillUnmount(){
+    return DeckSlideStore.unlisten(this.onChange)
   }
+
+  onChange = (state) => {
+    return this.setState(state)
+  };
 
   render() {
-    let numberOfSlides = this.state.data.slides
+    let numberOfSlides = this.state.slide.slides
 
     let i = 1
     let nav = []
     while(i <= numberOfSlides){
-      nav.push(<DeckSlideNav key={uuid.v4()} name={this.state.name} slide={i} />)
+      nav.push(<DeckSlideNav key={uuid.v4()} name={this.props.params.name} slideNumber={i} />)
       i++
     }
 
@@ -66,27 +83,13 @@ export default class DeckSlide extends React.Component {
 
         <div className="slide-holder">
           <div className="slide">
-            <DeckSlideHeading slide={this.state.data.slide} />
-            <DeckSlideImages slide={this.state.data.slide} />
-            <DeckSlideParagraphs slide={this.state.data.slide} />
+            <DeckSlideHeading slide={this.state.slide.slide} />
+            <DeckSlideImages slide={this.state.slide.slide} />
+            <DeckSlideParagraphs slide={this.state.slide.slide} />
           </div>
         </div>
 
       </div>
-    )
-  }
-
-  fetchData(params) {
-    request.get(`${window.location.origin}/api/decks/${params.name}/slide/${params.slideNumber}`,
-      (err, response, body) => {
-        return (
-          this.setState({
-            name: params.name,
-            slideNumber: params.slideNumber,
-            data: JSON.parse(body)
-          })
-        )
-      }
     )
   }
 
@@ -103,15 +106,5 @@ export default class DeckSlide extends React.Component {
         iconClass: 'fa fa-bar-chart'
       }
     ]
-  }
-}
-
-class DeckSlideNav extends React.Component {
-  render() {
-    return (
-      <li>
-        <Link className="btn" activeClassName="active" to={`/decks/${this.props.name}/slides/${this.props.slide}`}>{this.props.slide}</Link>
-      </li>
-    )
   }
 }

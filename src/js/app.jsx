@@ -4,9 +4,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, Link, browserHistory } from 'react-router'
 
-import DeckList from './DeckList'
-import DeckSlide from './DeckSlide'
-import Stats from './Stats'
+import DeckList from './components/DeckList'
+import DeckSlide from './components/DeckSlide'
+import Stats from './components/Stats'
 
 ReactDOM.render((
     <Router history={browserHistory}>

@@ -5,25 +5,36 @@ import request from 'request'
 import { Link } from 'react-router'
 import uuid from 'uuid'
 
+import DeckListStore from '../stores/DeckListStore'
+import DeckListActions from '../actions/DeckListActions'
+
 export default class DeckList extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      data: []
-    }
+    this.state = DeckListStore.getState();
+
+    return this
+  }
+
+  componentWillMount(){
+    return DeckListStore.listen(this.onChange)
   }
 
   componentDidMount() {
-    request.get(`${window.location.origin}/api/decks`,
-      (err, response, body) => {
-        return this.setState({data: JSON.parse(body).decks})
-      }
-    )
+    return DeckListActions.fetchDeckList()
   }
 
+  componentWillUnmount() {
+    return DeckListStore.unlisten(this.onChange)
+  }
+
+  onChange = (state) => {
+    return this.setState(state)
+  };
+
   render() {
-    let decks = this.state.data.map(function(deck, index) {
+    let decks = this.state.decks.map(function(deck, index) {
       return <DeckListItem key={uuid.v4()} name={deck} />
     });
 
