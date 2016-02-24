@@ -18,13 +18,6 @@ const DeckSource = {
 
     request.get(url, (err, response, body) => {
       return cb(JSON.parse(body))
-      // return (
-      //   this.setState({
-      //     name: params.name,
-      //     slideNumber: params.slideNumber,
-      //     data: JSON.parse(body)
-      //   })
-      // )
     })
   }
 }
