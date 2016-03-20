@@ -3,25 +3,43 @@
 import React from 'react'
 import request from 'request'
 
+// Store
+import CountryStatsStore from '../../stores/stats/CountryStatsStore'
+
+// Actions
+import CountryStatsActions from '../../actions/CountryStatsActions'
+
 export default class CountryStats extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   };
 
   static defaultProps = {
-    slide: {}
+    params: {}
   };
 
-  componentDidMount() {
-    this.fetchData(this.props.params, (data) => {
-      this.setState({data: data})
-
-      let chartData  = this.prepareDates(data)
-
-      let ctx = document.getElementById("countryChart").getContext("2d");
-      new Chart(ctx).Line(chartData);
-    })
+  componentWillMount() {
+    return CountryStatsStore.listen(this.onChange)
   }
+
+  componentDidMount() {
+    return CountryStatsActions.fetchCountryStats(this.props.params.name)
+  }
+
+  componentDidUpdate() {
+    if(Object.keys(this.state.chartData).length !== 0) {
+      let ctx = document.getElementById("countryChart").getContext("2d");
+      return new Chart(ctx).Line(this.state.chartData);
+    }
+  }
+
+  componentWillUnmount() {
+    return CountryStatsStore.unlisten(this.onChange)
+  }
+
+  onChange = (state) => {
+    return this.setState(state)
+  };
 
   render() {
     return (
@@ -30,41 +48,5 @@ export default class CountryStats extends React.Component {
         <canvas id="countryChart"></canvas>
       </div>
     )
-  }
-
-  fetchData(params, cb) {
-    request.get(`${window.location.origin}/api/decks/${params.name}/stats/countries`,
-      function(err, response, body){
-        return cb(JSON.parse(body))
-      }
-    )
-  }
-
-  prepareDates(data){
-    let labels = data.map(function(el){
-      return el.country
-    })
-
-    let dataPoints = data.map(function(el){
-      return el.value
-    })
-
-    let chartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: "Countries",
-          fillColor: "rgba(143,172,248,0.2)",
-          strokeColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(143,172,248,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-          data: dataPoints
-        }
-      ]
-    }
-
-    return chartData
   }
 }
