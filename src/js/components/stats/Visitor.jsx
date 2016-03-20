@@ -23,7 +23,7 @@ export default class VisitorStats extends React.Component {
   }
 
   componentDidMount() {
-    VisitorStatsActions.fetchVisitorStats(this.props.params.name)
+    return VisitorStatsActions.fetchVisitorStats(this.props.params.name)
   }
 
   componentDidUpdate() {
